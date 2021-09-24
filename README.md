@@ -24,3 +24,7 @@ examples thus some of the code is Copyright © 2001-2013 Python
 Software Foundation; All Rights Reserved under the PSF license (GPL
 compatible) http://docs.python.org/2/library/socketserver.html
 
+Reference Link:
+https://www.runoob.com/http/http-messages.html
+https://docs.python.org/3/library/http.server.html#http.server.BaseHTTPRequestHandler.responses
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
