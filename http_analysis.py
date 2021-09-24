@@ -1,27 +1,6 @@
-Copyright [2021] [Haoyuan Li]
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-
-
-
-
-
-
-
-
+# return status code
 import time
 
-# return status code
 
 class StatusCode(object):
     Ok="HTTP/1.1 200 OK\r\n"
@@ -47,6 +26,7 @@ class HandleRequest(object):
         self.contentType=None
         self.date=None
         self.body=None
+        self.connectionlenght=None
 
     def read_file(self,filename):
         f=open(filename,'rb')
@@ -67,6 +47,7 @@ class HandleRequest(object):
 
     def handleResponse(self, data):
         self.extract_data(data)
+        print(data)
         if self.method.lower() != "get":
             self.date = time.asctime()
             self.status = StatusCode.NotAllowedMethod
@@ -93,7 +74,7 @@ class HandleRequest(object):
                 except:
                     self.status=StatusCode.NotFound
                     self.date=time.asctime()
-                    response=self.status+"Date: "+self.date+'\r\n'
+                    response=self.status+"Date: "+self.date+'\r\n'+"Connection:close\r\n"
                     return response
                 else:
                     if '.html' in self.filename:
@@ -105,10 +86,11 @@ class HandleRequest(object):
             else:
                 self.status = StatusCode.NotFound
                 self.date = time.asctime()
-                response = self.status + "Date: " + self.date + '\r\n'
+                response = self.status + "Date: " + self.date + '\r\n'+"Connection:close\r\n"
                 return response
             self.date = time.asctime()
-            response = self.status+"Date: "+self.date+'\r\n'+"content-type: "+self.contentType+'\r\n\r\n'+self.body.decode()
+            self.connectionlenght=len(self.body)
+            response = self.status+"Date: "+self.date+'\r\n'+"Content-Length: "+str(self.connectionlenght)+'\r\n'+"content-type: "+self.contentType+'\r\n\r\n'+self.body.decode()
             return response
 
 
